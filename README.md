@@ -48,7 +48,7 @@ Example:
 {
   "CatFactApi": {
     "BaseUrl": "https://catfact.ninja/",
-    "TimeoutSeconds": 5
+    "TimeoutSeconds": 10
   },
   "FileStorage": {
     "Path": "data/catfacts.txt"
