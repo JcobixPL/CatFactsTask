@@ -7,9 +7,12 @@ public class FactFileWriter : IFactFileWriter
 {
     private readonly string _filePath;
     private readonly SemaphoreSlim _semaphore = new(1, 1);
+    private readonly ILogger<FactFileWriter> _logger;
 
-    public FactFileWriter(IConfiguration configuration, IWebHostEnvironment environment)
+    public FactFileWriter(IConfiguration configuration, IWebHostEnvironment environment, ILogger<FactFileWriter> logger)
     {
+        _logger = logger;
+            
         var path = configuration["FileStorage:Path"]
             ?? throw new InvalidOperationException(
                 "FileStorage path is missing.");
@@ -36,6 +39,10 @@ public class FactFileWriter : IFactFileWriter
                 _filePath,
                 line + Environment.NewLine,
                 cancellationToken);
+
+            _logger.LogInformation(
+                "Appended cat fact to file: {FilePath}",
+                _filePath);
         }
         finally
         {
