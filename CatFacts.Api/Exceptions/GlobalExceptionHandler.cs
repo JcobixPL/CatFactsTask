@@ -36,7 +36,7 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
             }
         };
 
-        context.Response.WriteAsJsonAsync(
+        await context.Response.WriteAsJsonAsync(
             problemDetails,
             cancellationToken);
 

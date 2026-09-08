@@ -6,10 +6,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+var catFactApiBaseUrl =
+    builder.Configuration["CatFactApi:BaseUrl"]
+    ?? throw new InvalidOperationException(
+        "Cat Fact API base URL is missing.");
+
+var catFactApiTimeoutSeconds =
+    builder.Configuration.GetValue<int>("CatFactApi:TimeoutSeconds");
+
+if (catFactApiTimeoutSeconds <= 0)
+{
+    throw new InvalidOperationException(
+        "Cat Fact API timeout must be greater than 0.");
+}
+
 builder.Services.AddHttpClient<ICatFactClient, CatFactClient>(client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["CatFactApi:BaseUrl"]);
-    client.Timeout = TimeSpan.FromSeconds(builder.Configuration.GetValue<int>("CatFactApi:TimeoutSeconds"));
+    client.BaseAddress = new Uri(catFactApiBaseUrl);
+    client.Timeout = TimeSpan.FromSeconds(catFactApiTimeoutSeconds);
 });
 
 builder.Services.AddSingleton<IFactFileWriter, FactFileWriter>();
