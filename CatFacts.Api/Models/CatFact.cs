@@ -1,6 +1,8 @@
-﻿namespace CatFacts.Api.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace CatFacts.Api.Models;
 
 public sealed record CatFact(
-    string Fact,
-    int Length
+    [property: JsonPropertyName("fact")] string Fact,
+    [property: JsonPropertyName("length")] int Length
 );
