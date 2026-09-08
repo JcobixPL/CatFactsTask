@@ -1,6 +1,14 @@
+using CatFacts.Api.Clients;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+builder.Services.AddHttpClient<ICatFactClient, CatFactClient>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["CatFactApi:BaseUrl"]);
+    client.Timeout = TimeSpan.FromSeconds(builder.Configuration.GetValue<int>("CatFactApi:TimeoutSeconds"));
+});
 
 builder.Services.AddOpenApi();
 
