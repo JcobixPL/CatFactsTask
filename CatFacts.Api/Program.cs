@@ -1,4 +1,5 @@
 using CatFacts.Api.Clients;
+using CatFacts.Api.Exceptions;
 using CatFacts.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +14,13 @@ builder.Services.AddHttpClient<ICatFactClient, CatFactClient>(client =>
 
 builder.Services.AddSingleton<IFactFileWriter, FactFileWriter>();
 builder.Services.AddScoped<ICatFactService, CatFactService>();
-builder.Services.AddOpenApi();
+
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 
