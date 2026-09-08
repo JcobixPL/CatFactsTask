@@ -13,15 +13,9 @@ builder.Services.AddHttpClient<ICatFactClient, CatFactClient>(client =>
 
 builder.Services.AddSingleton<IFactFileWriter, FactFileWriter>();
 builder.Services.AddScoped<ICatFactService, CatFactService>();
-
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
 app.UseHttpsRedirection();
 
